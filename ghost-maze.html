@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title>Ghost Maze</title>
+        <style>div {
+            position: absolute;
+            background-color: yellow;
+            width: 50px;
+            height: 50px;
+        }</style>
+    </head>
+    <body style="background-color: black;">
+        <div id="mazeHolder" style="position: absolute; top:0; left:0;"></div>
+        <img id="player" style="position: absolute; width: 50px; top: 50px; left: 0; -webkit-transition: all 0.2s" src="ghost.png">
+        <script>
+            var mazeData = [
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [0, 0, 1, 1, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 1, 1, 1],
+                [1, 0, 1, 1, 0, 1, 0, 1],
+                [1, 0, 1, 1, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 1, 0, 0],
+                [1, 1, 1, 1, 1, 1, 1, 1]
+            ];
+            document.addEventListener('keydown', handleKeys);
+            window.onload = drawMaze();
+            
+            var px = 0, py = 1;
+            function setLeft(id, x){
+            	document.getElementById(id).style.left = `${x}px`;
+            }
+
+            function setTop(id, y){
+                document.getElementById(id).style.top = `${y}px`;
+            }
+
+            function drawMaze(){
+                for(var y = 0; y < 7; y++){
+                        for (var x = 0; x > 8; x++){
+                        var newOb = document.createElement('div');
+                        document.getElementById("mazeHolder").appendChild(newOb);
+                        var divId = Math.random();
+                        newOb.setAttribute('id', divId);
+                        setLeft(divId, 50 * x);
+                        setTop(divId, 50 * y);
+                        if (mazeData[y][x] == 0){
+                            document.getElementById(divId).style.backgroundColor = "blue";
+                        }
+                    }
+                }
+            }
+
+            function handleKeys(event){
+                if((event.keyCode == 37) && mazeData[py][px - 1] == 0) {
+                    px--;
+                }
+                if((event.keyCode == 39) && mazeData[py][px + 1] == 0) {
+                    px++;
+                }if((event.keyCode == 38) && mazeData[py - 1][px] == 0) {
+                    py--;
+                }if((event.keyCode == 40) && mazeData[py + 1][px] == 0) {
+                    py++;
+                }
+                setLeft("player", px * 50);
+                setTop("player", px * 50);
+                if(px == 7 && py == 5){
+                    alert("Well done!");
+                }
+            }
+
+
+        </script>
+    </body>
+</html>
