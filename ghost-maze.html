@@ -12,6 +12,7 @@
         <div id="mazeHolder" style="position: absolute; top:0; left:0;"></div>
         <img id="player" style="position: absolute; width: 50px; top: 50px; left: 0; -webkit-transition: all 0.2s" src="ghost.png">
         <script>
+            // Create a 2D array to correspond to the rows and columns for the maze pathways (0) and walls (1).
             var mazeData = [
                 [1, 1, 1, 1, 1, 1, 1, 1],
                 [0, 0, 1, 1, 0, 0, 0, 1],
@@ -21,10 +22,15 @@
                 [1, 0, 0, 0, 0, 1, 0, 0],
                 [1, 1, 1, 1, 1, 1, 1, 1]
             ];
+
+            // Listen for keypress events and call handleKeys.
             document.addEventListener('keydown', handleKeys);
+
+            // Draw the maze.
             document.onload = drawMaze();
             
-            var px = 0, py = 1;
+            // Instantiate variables to hold player X, Y position.
+            var player_x_position = 0, player_y_position = 1;
 
             function setLeft(id, x){
             	document.getElementById(id).style.left = `${x}px`;
@@ -52,27 +58,27 @@
             }
 
             function handleKeys(event){
-                if((event.key == 'ArrowLeft') && mazeData[py][px - 1] == 0) {
-                    px--;
+                // Dependent upon the key pressed and the player's position relative to a "wall" (a 1 in the 2D array), change the player X and/or Y position.
+                if((event.key == 'ArrowLeft') && mazeData[player_y_position][player_x_position - 1] == 0) {
+                    player_x_position--;
                 }
-                if((event.key == 'ArrowRight') && mazeData[py][px + 1] == 0) {
-                    px++;
+                if((event.key == 'ArrowRight') && mazeData[player_y_position][player_x_position + 1] == 0) {
+                    player_x_position++;
                 }
-                if((event.key == 'ArrowUp') && mazeData[py - 1][px] == 0) {
-                    py--;
+                if((event.key == 'ArrowUp') && mazeData[player_y_position - 1][player_x_position] == 0) {
+                    player_y_position--;
                 }
-                if((event.key == 'ArrowDown') && mazeData[py + 1][px] == 0) {
-                    py++;
+                if((event.key == 'ArrowDown') && mazeData[player_y_position + 1][player_x_position] == 0) {
+                    player_y_position++;
                 }
-                setLeft("player", px * 50);
-                setTop("player", py * 50);
+                setLeft("player", player_x_position * 50);
+                setTop("player", player_y_position * 50);
 
                 // If the coordinates of the player are the coordinates of the exit, end the game with an alert.
-                if(px == 7 && py == 5){
+                if(player_x_position == 7 && player_y_position == 5){
                     alert("Well done!");
                 }
             }
-
 
         </script>
     </body>
