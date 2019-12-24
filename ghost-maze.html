@@ -3,7 +3,7 @@
         <title>Ghost Maze</title>
         <style>div {
             position: absolute;
-            background-color: yellow;
+            background-color: blue;
             width: 50px;
             height: 50px;
         }</style>
@@ -22,9 +22,10 @@
                 [1, 1, 1, 1, 1, 1, 1, 1]
             ];
             document.addEventListener('keydown', handleKeys);
-            window.onload = drawMaze();
+            document.onload = drawMaze();
             
             var px = 0, py = 1;
+
             function setLeft(id, x){
             	document.getElementById(id).style.left = `${x}px`;
             }
@@ -35,7 +36,8 @@
 
             function drawMaze(){
                 for(var y = 0; y < 7; y++){
-                        for (var x = 0; x > 8; x++){
+                    for (var x = 0; x < 8; x++){
+                        console.log('drawing');
                         var newOb = document.createElement('div');
                         document.getElementById("mazeHolder").appendChild(newOb);
                         var divId = Math.random();
@@ -43,25 +45,29 @@
                         setLeft(divId, 50 * x);
                         setTop(divId, 50 * y);
                         if (mazeData[y][x] == 0){
-                            document.getElementById(divId).style.backgroundColor = "blue";
+                            document.getElementById(divId).style.backgroundColor = "darkblue";
                         }
                     }
                 }
             }
 
             function handleKeys(event){
-                if((event.keyCode == 37) && mazeData[py][px - 1] == 0) {
+                if((event.key == 'ArrowLeft') && mazeData[py][px - 1] == 0) {
                     px--;
                 }
-                if((event.keyCode == 39) && mazeData[py][px + 1] == 0) {
+                if((event.key == 'ArrowRight') && mazeData[py][px + 1] == 0) {
                     px++;
-                }if((event.keyCode == 38) && mazeData[py - 1][px] == 0) {
+                }
+                if((event.key == 'ArrowUp') && mazeData[py - 1][px] == 0) {
                     py--;
-                }if((event.keyCode == 40) && mazeData[py + 1][px] == 0) {
+                }
+                if((event.key == 'ArrowDown') && mazeData[py + 1][px] == 0) {
                     py++;
                 }
                 setLeft("player", px * 50);
-                setTop("player", px * 50);
+                setTop("player", py * 50);
+
+                // If the coordinates of the player are the coordinates of the exit, end the game with an alert.
                 if(px == 7 && py == 5){
                     alert("Well done!");
                 }
